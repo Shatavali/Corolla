@@ -43,3 +43,4 @@ connectDB().then(() => {
     console.log(`[Server] Health check available at http://localhost:${PORT}/api/health`);
   });
 });
+module.exports = app;
