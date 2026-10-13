@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Chess } from 'chess.js';
-import { Chessboard } from 'react-chessboard';
+import { Chess, SQUARES } from 'chess.js';
+import Chessground from './Chessground';
 import { normalizeFen } from '../utils/fenHelper';
 
 export default function ChessBoard() {
@@ -165,18 +165,26 @@ export default function ChessBoard() {
           </div>
 
           {/* Chessboard Viewport */}
-          <div className="board-viewport" style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
-            <Chessboard
-              position={game.fen()}
-              onPieceDrop={onPieceDrop}
-              boardOrientation={boardOrientation}
-              customBoardStyle={{
-                borderRadius: '8px',
-                boxShadow: '0 12px 36px rgba(0, 0, 0, 0.65)',
+          <div className="board-viewport" style={{ width: '100%', maxWidth: '600px', margin: '0 auto', aspectRatio: '1/1' }}>
+            <Chessground
+              config={{
+                fen: game.fen(),
+                orientation: boardOrientation,
+                turnColor: game.turn() === 'w' ? 'white' : 'black',
+                movable: {
+                  color: game.turn() === 'w' ? 'white' : 'black',
+                  free: false,
+                  dests: (() => {
+                    const dests = new Map();
+                    SQUARES.forEach(s => {
+                      const ms = game.moves({square: s, verbose: true});
+                      if (ms.length) dests.set(s, ms.map(m => m.to));
+                    });
+                    return dests;
+                  })()
+                }
               }}
-              customDarkSquareStyle={{ backgroundColor: '#2e384d' }}
-              customLightSquareStyle={{ backgroundColor: '#cad5e2' }}
-              animationDuration={200}
+              onMove={onPieceDrop}
             />
           </div>
 

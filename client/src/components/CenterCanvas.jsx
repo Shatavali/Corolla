@@ -1,12 +1,7 @@
 import React, { useMemo } from 'react';
-import Chessground from '@react-chess/chessground';
+import Chessground from './Chessground';
 import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, RotateCcw, FlipVertical2, Copy } from 'lucide-react';
 import { useChessGame } from '../hooks/useChessGame';
-
-// Lichess chessground CSS — base layout + brown board theme + cburnett piece set
-import 'chessground/assets/chessground.base.css';
-import 'chessground/assets/chessground.brown.css';
-import 'chessground/assets/chessground.cburnett.css';
 
 export default function CenterCanvas() {
   const {
